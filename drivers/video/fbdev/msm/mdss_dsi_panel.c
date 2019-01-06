@@ -1025,25 +1025,6 @@ backlight level 0-->55 ==> 0-->55
 backlight level 55-->230 ==> 55-->200
 backlight level 230-->255 ==> 200-->255
  *************************************/
-#ifndef CONFIG_CUSTOM_ROM
-static u32 backlight_level_remap(struct mdss_dsi_ctrl_pdata *ctrl, u32 level)
-{
-	u32 remap_level = 0;
-
-	if (ctrl->bklt_max == 255) {
-		if (level < 55) {
-			remap_level = level;
-		} else if ((level >= 55) && (level <= 230)) {
-			remap_level = (level*29+330)/35;
-		} else {
-			remap_level = level*11/5-306;
-		}
-	} else {
-		remap_level = level;
-	}
-	return remap_level;
-}
-#endif
 
 static void mdss_dsi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 							u32 bl_level)
@@ -1064,12 +1045,6 @@ static void mdss_dsi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-#ifndef CONFIG_CUSTOM_ROM
-	if (ctrl_pdata->high_brightness_panel) {
-	  pr_debug("%s goto backlight level remap\n", __func__);
-	  bl_level = backlight_level_remap(ctrl_pdata, bl_level);
-	}
-#endif
 	/*
 	 * Some backlight controllers specify a minimum duty cycle
 	 * for the backlight brightness. If the brightness is less
@@ -3297,12 +3272,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 			pinfo->panel_orientation = MDP_FLIP_UD;
 	}
 
-#ifndef CONFIG_CUSTOM_ROM
-	rc = of_property_read_u32(np, "qcom,mdss-brightness-max-level", &tmp);
-	pinfo->brightness_max = (!rc ? tmp : MDSS_MAX_BL_BRIGHTNESS);
-#else
 	pinfo->brightness_max = MDSS_MAX_BL_BRIGHTNESS;
-#endif
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-bl-min-level", &tmp);
 	pinfo->bl_min = (!rc ? tmp : 0);
 	rc = of_property_read_u32(np, "qcom,mdss-dsi-bl-max-level", &tmp);

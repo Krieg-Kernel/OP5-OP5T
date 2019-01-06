@@ -591,7 +591,6 @@ static const struct file_operations gf_fops = {
 #endif
 };
 
-#ifdef CONFIG_CUSTOM_ROM
 static ssize_t proximity_state_set(struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -623,7 +622,6 @@ static struct attribute *attributes[] = {
 static const struct attribute_group attribute_group = {
 	.attrs = attributes,
 };
-#endif
 
 static int goodix_fb_state_chg_callback(struct notifier_block *nb,
 		unsigned long val, void *data)
@@ -687,9 +685,7 @@ static int gf_probe(struct platform_device *pdev)
 #endif
 {
 	struct gf_dev *gf_dev = &gf;
-#ifdef CONFIG_CUSTOM_ROM
 	struct device *dev = &pdev->dev;
-#endif
 	int status = -EINVAL;
 	unsigned long minor;
 	int i;
@@ -810,7 +806,6 @@ static int gf_probe(struct platform_device *pdev)
 	gf_disable_irq(gf_dev);
 	gpio_set_value(gf_dev->reset_gpio, 0);
 
-#ifdef CONFIG_CUSTOM_ROM
 	dev_set_drvdata(dev, gf_dev);
 
 	status = sysfs_create_group(&dev->kobj, &attribute_group);
@@ -818,7 +813,6 @@ static int gf_probe(struct platform_device *pdev)
 		dev_err(dev, "could not create sysfs\n");
 		goto err_irq;
 	}
-#endif
 
 	pr_info("version V%d.%d.%02d\n", VER_MAJOR, VER_MINOR, PATCH_LEVEL);
 
