@@ -79,6 +79,7 @@ config BFQ_GROUP_IOSCHED
 	(cgroups-v1) or io (cgroups-v2) controller.
 
 choice
+
 	prompt "Default I/O scheduler"
 	default DEFAULT_ANXIETY
 	help
