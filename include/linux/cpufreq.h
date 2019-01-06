@@ -528,9 +528,6 @@ extern struct cpufreq_governor cpufreq_gov_schedutil;
 #endif
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_schedutil)
-#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCHED)
-extern struct cpufreq_governor cpufreq_gov_sched;
-#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_sched)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_HELIX)
  extern struct cpufreq_governor cpufreq_gov_helix_schedutil;
  #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_helix_schedutil)
