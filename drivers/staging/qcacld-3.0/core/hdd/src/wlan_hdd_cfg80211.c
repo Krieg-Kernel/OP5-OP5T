@@ -9277,6 +9277,8 @@ static int hdd_validate_avoid_freq_chanlist(hdd_context_t *hdd_ctx,
 		for (ch_idx = channel_list->avoidFreqRange[range_idx].startFreq;
 		     ch_idx <= channel_list->avoidFreqRange[range_idx].endFreq;
 		     ch_idx++) {
+			 if (INVALID_CHANNEL == cds_get_channel_enum(ch_idx))
+				continue;
 			for (unsafe_channel_index = 0;
 			     unsafe_channel_index < unsafe_channel_count;
 			     unsafe_channel_index++) {
@@ -11390,7 +11392,7 @@ static int __wlan_hdd_cfg80211_set_nud_stats(struct wiphy *wiphy,
 		}
 	}
 
-	QDF_TRACE(QDF_MODULE_ID_HDD, QDF_TRACE_LEVEL_DEBUG,
+	QDF_TRACE(QDF_MODULE_ID_HDD, QDF_TRACE_LEVEL_INFO,
 		  "%s STATS_SET_START Received flag %d!!", __func__,
 		  arp_stats_params.flag);
 
