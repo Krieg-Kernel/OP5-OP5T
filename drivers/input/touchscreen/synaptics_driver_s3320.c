@@ -179,7 +179,7 @@ struct test_header {
 
 // module parameter
 bool s3320_stop_buttons;
-bool no_buttons_during_touch = false;
+bool no_buttons_during_touch = true;
 module_param(no_buttons_during_touch, bool, 0644);
 
 /*********************for Debug LOG switch*******************/
